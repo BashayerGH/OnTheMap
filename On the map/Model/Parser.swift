@@ -10,8 +10,8 @@ import Foundation
 
 class Parser {
     
-    static func getStudentLocations(limit: Int = 100, skip: Int = 0, orderBy: SLParam = .updatedAt, completion: @escaping (Locations?)->Void) {
-        guard let url = URL(string: "\(Constants.STUDENT_LOCATION)?\(Constants.ParameterKeys.LIMIT)=\(limit)&\(Constants.ParameterKeys.SKIP)=\(skip)&\(Constants.ParameterKeys.ORDER)=-\(orderBy.rawValue)") else {
+    static func getStudentLocations(limit: Int = 100, orderBy: SLParam = .updatedAt, completion: @escaping (Locations?)->Void) {
+        guard let url = URL(string: "\(Constants.STUDENT_LOCATION)?\(Constants.ParameterKeys.LIMIT)=\(limit)&\(Constants.ParameterKeys.ORDER)=-\(orderBy.rawValue)") else {
             completion(nil)
             return
         }
@@ -32,12 +32,10 @@ class Parser {
                     
                     if let json = try? JSONSerialization.jsonObject(with: data!, options: []),
                         let dict = json as? [String:Any],
-                        let results = dict["results"] as? [Any] {
+                        let results = dict["results"] as? [[String:AnyObject]] {
                         
                         for location in results {
-                            let data = try! JSONSerialization.data(withJSONObject: location)
-                            let studentLocation1 = StudentInformation.init(dictionary: dict as [String : AnyObject])
-                            
+                            let studentLocation1 = StudentInformation(dictionary: location)
                             
                             studentLocations.append(studentLocation1)
                         }
@@ -54,12 +52,31 @@ class Parser {
         task.resume()
     }
     
-    static func postLocation(_ location: StudentInformation, completion: @escaping (String?)->Void) {
-        /////////////\\\\\\\\\\\\\\///////////////////\\\\\\\\\\\\\\\\\\\\\\
+    static func postLocation(location: StudentInformation, completion: @escaping (String?)->Void) {
         
-        // Here you'll implement the logic for posting a student location
-        // Please refere to the roadmap file and classroom for more details
-        // Note that you'll need to send (uniqueKey, firstName, lastName) along with the post request. These information should be obtained upon logging in and they should be saved somewhere (Ex. AppDelegate or in this class)
+        guard let url = URL(string: Constants.STUDENT_LOCATION) else {
+            completion("error")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.post.rawValue
+        request.addValue(Constants.HeaderValues.PARSE_APP_ID, forHTTPHeaderField: Constants.HeaderKeys.PARSE_APP_ID)
+        request.addValue(Constants.HeaderValues.PARSE_API_KEY, forHTTPHeaderField: Constants.HeaderKeys.PARSE_API_KEY)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        
+        request.httpBody = "{\"uniqueKey\": \"\(location.uniqueKey)\", \"firstName\": \"\(location.firstName)\", \"lastName\": \"\(location.lastName)\",\"mapString\": \"\(location.mapString))\", \"mediaURL\": \"\(location.mediaURL)\",\"latitude\": \(location.latitude), \"longitude\": \(location.longitude)}".data(using: .utf8)
+        let session = URLSession.shared
+        
+
+        session.dataTask(with: request) { (results, response, error) in
+            
+            if let error = error {
+                completion("\(error)")
+            }
+        }
+
     }
     
 }

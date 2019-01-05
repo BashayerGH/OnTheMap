@@ -7,3 +7,16 @@
 //
 
 import Foundation
+
+struct Locations {
+    var LocationsArray: [StudentInformation] = []
+    
+    // singleton
+    static func sharedInstance() -> Locations {
+        struct Singleton {
+            static var sharedInstance = Locations()
+        }
+        return Singleton.sharedInstance
+    }
+    
+}

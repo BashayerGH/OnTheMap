@@ -10,6 +10,11 @@ import UIKit
 
 class LogInViewController: UIViewController {
 
+    
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var inform: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -17,14 +22,24 @@ class LogInViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func login(_ sender: Any) {
+        
+        API.postSession(username: emailTextField.text!, password: passwordTextField.text!) { (errString1) in
+            guard errString1 == nil else {
+                self.inform.text = errString1!
+                return
+            }
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "Login", sender: nil)
+            }
+        }
     }
-    */
-
+    
+    @IBAction func register(sender: UIButton) {
+        if let url = NSURL(string: "https://www.udacity.com/account/auth#!/signup") {
+            UIApplication.shared.openURL(url as URL)
+        }
+    }
+    
+    
 }

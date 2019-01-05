@@ -7,3 +7,15 @@
 //
 
 import Foundation
+class CurrentClient {
+    
+    var currentStudent = StudentInformation()
+    
+    // singleton
+    class func sharedInstance() -> CurrentClient {
+        struct Singleton {
+            static var sharedInstance = CurrentClient()
+        }
+        return Singleton.sharedInstance;
+    }
+}

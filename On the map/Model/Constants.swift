@@ -7,7 +7,7 @@
 //
 
 import Foundation
-struct APIConstants {
+struct Constants {
     
     struct HeaderKeys {
         static let PARSE_APP_ID = "X-Parse-Application-Id"
@@ -25,6 +25,22 @@ struct APIConstants {
         static let SKIP = "skip"
         static let ORDER = "order"
     }
+    
+    // MARK: API Response Keys
+    struct ResponseKeys {
+        static let objectId = "object_id"
+        static let uniqueKey = "unique_key"
+        static let firstName = "first_name"
+        static let lastName = "last_name"
+        static let latitude = "latitude"
+        static let longitude = "longitude"
+        static let mapString = "mapString"
+        static let mediaURL = "mediaURL"
+        static let createdAt = "created_at"
+        static let updatedAt = "updated_at"
+        
+    }
+
     
     private static let MAIN = "https://parse.udacity.com"
     static let SESSION = "https://onthemap-api.udacity.com/v1/session"
