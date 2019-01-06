@@ -50,8 +50,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     self.locationsData?.append(obj1)
                      print(self.locationsData!.count)
                 }
+                self.tableOfLocations.reloadData();
             }
-            
         }//end getAllLocations
     }
     
@@ -65,22 +65,22 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Locations.sharedInstance().LocationsArray.count
+        return self.locationsData?.count ?? 0
+
     }
     
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let student = self.locationsData?[indexPath.row]
+        let cell = tableOfLocations.dequeueReusableCell(withIdentifier: "pin", for: indexPath)
         
-        let student = Locations.sharedInstance().LocationsArray[indexPath.row]
-        let cell = tableOfLocations.dequeueReusableCell(withIdentifier: "pin")
         
+        cell.imageView?.image = UIImage(named: "icon-pin")
+        cell.textLabel?.text = "\(student?.firstName ?? "") \(student?.lastName ?? "")"
+        cell.detailTextLabel?.text = student?.mediaURL
         
-        cell!.imageView?.image = UIImage(named: "icon-pin")
-        cell!.textLabel?.text = "\(student.firstName) \(student.lastName)"
-        cell!.detailTextLabel?.text = student.mediaURL
-        
-        return cell!
+        return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -91,7 +91,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let url = URL(string: toOpen), app.canOpenURL(url) {
             app.open(url, options: [:], completionHandler: nil)
         }else{
-            print("the link is invalid!")
+            let alertController = UIAlertController(title: "Error", message: "The link is invalid!", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+            return
         }
     }
     
