@@ -29,7 +29,6 @@ class AddLocationViewController: UIViewController {
                 inform.text = "Please fill both fields and try again"
                 return }
         
-        
 
         let studentLocation = StudentInformation(mapString1: location, mediaURL1: mediaLink)
         geocodeCoordinates(studentLocation)

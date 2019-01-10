@@ -211,7 +211,7 @@
         <!--Add Location-->
         <scene sceneID="OFC-fS-WGD">
             <objects>
-                <viewController id="Dfv-L9-oNp" customClass="AddLocationViewController" customModule="Example12" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Dfv-L9-oNp" customClass="AddLocationViewController" customModule="On_the_map" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RBf-Yf-K0r"/>
                         <viewControllerLayoutGuide type="bottom" id="ige-tH-P4L"/>
@@ -375,7 +375,7 @@
         <!--Map View Controller-->
         <scene sceneID="eFb-3K-KFG">
             <objects>
-                <viewController id="NI7-PB-gFR" customClass="MapViewController" customModule="Example12" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="NI7-PB-gFR" customClass="MapViewController" customModule="On_the_map" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pPr-rT-yBr"/>
                         <viewControllerLayoutGuide type="bottom" id="CRq-cr-DEc"/>

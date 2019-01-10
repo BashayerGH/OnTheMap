@@ -55,7 +55,16 @@ struct StudentInformation {
     }
     
     init() {
-        
+        firstName = ""
+        lastName = ""
+        latitude = 0.0
+        longitude = 0.0
+        mapString = ""
+        mediaURL = ""
+        objectId = ""
+        uniqueKey = ""
+        createdAt = ""
+        updatedAt = ""
     }
 }
 

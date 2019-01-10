@@ -55,7 +55,7 @@ class Parser {
     static func postLocation(location: StudentInformation, completion: @escaping (String?)->Void) {
         
         guard let url = URL(string: Constants.STUDENT_LOCATION) else {
-            completion("error")
+            completion("Error")
             return
         }
         
@@ -65,18 +65,28 @@ class Parser {
         request.addValue(Constants.HeaderValues.PARSE_API_KEY, forHTTPHeaderField: Constants.HeaderKeys.PARSE_API_KEY)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
+        print("lat \(location.latitude!)")
+        print("lon \(location.longitude!)")
         
-        request.httpBody = "{\"uniqueKey\": \"\(location.uniqueKey)\", \"firstName\": \"\(location.firstName)\", \"lastName\": \"\(location.lastName)\",\"mapString\": \"\(location.mapString))\", \"mediaURL\": \"\(location.mediaURL)\",\"latitude\": \(location.latitude), \"longitude\": \(location.longitude)}".data(using: .utf8)
+        
+        
+        request.httpBody = "{\"uniqueKey\": \"\(CurrentClient.sharedInstance().currentStudent.uniqueKey!)\", \"firstName\": \"\(CurrentClient.sharedInstance().currentStudent.firstName!)\", \"lastName\": \"\(CurrentClient.sharedInstance().currentStudent.lastName!)\",\"mapString\": \"\(location.mapString!)\", \"mediaURL\": \"\(location.mediaURL!)\",\"latitude\": \(location.latitude!), \"longitude\": \(location.longitude!)}".data(using: .utf8)
+
+        
+        
         let session = URLSession.shared
         
 
-        session.dataTask(with: request) { (results, response, error) in
+        let task = session.dataTask(with: request) { (results, response, error) in
             
-            if let error = error {
-                completion("\(error)")
-            }
-        }
 
+            if error != nil {
+                completion("The post fails! try again later")
+                return
+            }
+            print(String(data: results!, encoding: .utf8)!)
+        }
+        task.resume()
     }
     
 }

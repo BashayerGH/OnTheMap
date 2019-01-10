@@ -15,13 +15,7 @@ class LogInViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var inform: UILabel!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
     
-
     @IBAction func login(_ sender: Any) {
         
         API.postSession(username: emailTextField.text!, password: passwordTextField.text!) { (errString1) in
@@ -30,9 +24,11 @@ class LogInViewController: UIViewController {
                 return
             }
             DispatchQueue.main.async {
+                 self.passwordTextField.text = ""
                 self.performSegue(withIdentifier: "Login", sender: nil)
             }
         }
+        
     }
     
     @IBAction func register(sender: UIButton) {

@@ -14,15 +14,16 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var tableOfLocations: UITableView!
     var locationsData: [StudentInformation]?
     
-    override func viewWillAppear(_ animated: Bool) {
-       
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupUI()
-
+        locationsData?.removeAll()
         Parser.getStudentLocations { (locations) in
             
             DispatchQueue.main.async {
                 
-                guard let data = locations else {
+                guard locations != nil else {
                     let errorAlert = UIAlertController(title: "Erorr performing request", message: "There was an error performing your request", preferredStyle: .alert )
                     errorAlert.addAction(UIAlertAction (title: "OK", style: .default, handler: { _ in
                         return
@@ -34,38 +35,17 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 guard let locations = locations?.LocationsArray else { return }
                 self.locationsData = locations
                 
-                
-                
-                //Loop through the array of structs and get locations data from it so they can be displayed on the map
-                for locationStruct in locations {
-                    
-
-                    let mediaURL1 = locationStruct.mediaURL ?? " "
-                    let first1 = locationStruct.firstName ?? " "
-                    let last1 = locationStruct.lastName ?? " "
-                    let date1 = locationStruct.createdAt ?? " "
-
-                    var obj1 = StudentInformation(first: first1, last: last1, url: mediaURL1, date: date1)
-           
-                    self.locationsData?.append(obj1)
-                     print(self.locationsData!.count)
-                }
                 self.tableOfLocations.reloadData();
             }
         }//end getAllLocations
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.tableOfLocations.reloadData();
-
+        
     }
 
     
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.locationsData?.count ?? 0
+        return locationsData?.count ?? 0
 
     }
     

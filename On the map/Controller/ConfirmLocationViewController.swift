@@ -12,6 +12,8 @@ import MapKit
 class ConfirmLocationViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
+    
+    // information come from previous view controller
     var location: StudentInformation?
 
     override func viewDidLoad() {
@@ -39,26 +41,30 @@ class ConfirmLocationViewController: UIViewController {
 
     @IBAction func submit(_ sender: Any) {
         
+        
         // Updating current user fileds
         CurrentClient.sharedInstance().currentStudent.mapString = self.location?.mapString
         CurrentClient.sharedInstance().currentStudent.mediaURL = self.location?.mediaURL
         CurrentClient.sharedInstance().currentStudent.latitude = self.location?.latitude
         CurrentClient.sharedInstance().currentStudent.longitude = self.location?.longitude
         
-        Parser.postLocation(location: self.location!) { (error) in
-            guard error == nil else {
+
+        Parser.postLocation(location: self.location!) { error in
+            if error != nil {
                 let alertController = UIAlertController(title: "Error", message: error!, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                 self.present(alertController, animated: true, completion: nil)
                 return
+            }else {
+                let alertController = UIAlertController(title: "", message: "Post location done successfully", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { back in
+                    self.dismiss(animated: true, completion: nil)
+
+                }))
+                self.present(alertController, animated: true, completion: nil)
+                return   
             }
             
-            //Locations.LocationsArray.append(self.location!)
-            var Loc = Locations.sharedInstance().LocationsArray
-            Loc[Loc.count] = self.location!
-            
-            
-            self.dismiss(animated: true, completion: nil)
         }
     }
     

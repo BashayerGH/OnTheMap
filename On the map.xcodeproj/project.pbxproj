@@ -15,7 +15,6 @@
 		1111F72221DF49FF0051606A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1111F72121DF49FF0051606A /* Constants.swift */; };
 		1111F72421DF4B450051606A /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1111F72321DF4B450051606A /* API.swift */; };
 		1111F72621DF4B9C0051606A /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1111F72521DF4B9C0051606A /* Locations.swift */; };
-		1111F72821DF500F0051606A /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1111F72721DF500F0051606A /* UserInfo.swift */; };
 		1111F72A21DF5C310051606A /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1111F72921DF5C310051606A /* Parser.swift */; };
 		1111F72C21DF90600051606A /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1111F72B21DF90600051606A /* LogInViewController.swift */; };
 		1111F72E21E056460051606A /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1111F72D21E056460051606A /* MapViewController.swift */; };
@@ -36,7 +35,6 @@
 		1111F72121DF49FF0051606A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1111F72321DF4B450051606A /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		1111F72521DF4B9C0051606A /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
-		1111F72721DF500F0051606A /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		1111F72921DF5C310051606A /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		1111F72B21DF90600051606A /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		1111F72D21E056460051606A /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -101,7 +99,6 @@
 				1111F71F21DF3F1B0051606A /* StudentInformation.swift */,
 				1111F72521DF4B9C0051606A /* Locations.swift */,
 				1111F72121DF49FF0051606A /* Constants.swift */,
-				1111F72721DF500F0051606A /* UserInfo.swift */,
 				1111F72321DF4B450051606A /* API.swift */,
 				1111F72921DF5C310051606A /* Parser.swift */,
 				1111F73521E0C7F50051606A /* CurrentClient.swift */,
@@ -201,7 +198,6 @@
 				1111F72E21E056460051606A /* MapViewController.swift in Sources */,
 				1111F72C21DF90600051606A /* LogInViewController.swift in Sources */,
 				1111F73421E0B59C0051606A /* ConfirmLocationViewController.swift in Sources */,
-				1111F72821DF500F0051606A /* UserInfo.swift in Sources */,
 				1111F72A21DF5C310051606A /* Parser.swift in Sources */,
 				1111F72221DF49FF0051606A /* Constants.swift in Sources */,
 				1111F73621E0C7F50051606A /* CurrentClient.swift in Sources */,

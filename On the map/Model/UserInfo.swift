@@ -9,7 +9,14 @@
 import Foundation
 
 struct UserInfo {
-    var key: String?
-    var firstName: String?
-    var lastName: String?
+    public static var key: String?
+    public static var firstName: String?
+    public static var lastName: String?
+    
+    init() {
+        //temporary, because I can't get student information
+        UserInfo.key = ""
+        UserInfo.firstName = "test1"
+        UserInfo.lastName = "test2"
+    }
 }

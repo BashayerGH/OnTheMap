@@ -10,7 +10,6 @@ import Foundation
 
 class API {
     
-    private static var userInfo = UserInfo()
     public static var sessionId: String?
     
     
@@ -41,15 +40,13 @@ class API {
                         let sessionDict = dict["session"] as? [String: Any],
                         let accountDict = dict["account"] as? [String: Any]  {
                         
-                        
-                        
-                        self.userInfo.key = accountDict["key"] as? String
+                        CurrentClient.sharedInstance().currentStudent.uniqueKey = accountDict["key"] as? String
                         self.sessionId = sessionDict["id"] as? String
                         self.getUserInfo(completion: { err in
+                            if err == nil {
+                                errString = "Couldn't get the user info"
+                            }
                         })
-                        
-                        
-                        
                     } else {
                         errString = "Couldn't parse response"
                     }
@@ -131,13 +128,55 @@ class API {
     
     
     
-    static func getUserInfo(completion: @escaping (Error?)->Void) {
-        /////////////\\\\\\\\\\\\\\///////////////////\\\\\\\\\\\\\\\\\\\\\\
+    static func getUserInfo(completion: @escaping (String?)->Void) {
+    
+        print(CurrentClient.sharedInstance().currentStudent.uniqueKey!)
         
-        // This function is called right after the user logs in successfully
-        // It uses the user's key to retreive the rest of the information (firstName and lastName) and saves it to be used later on posting a location
-        // Hint: print out the retreived data in order to find out how you'll traverse the JSON object to get the firstName and lastName
+        
+        
+        guard let url = URL(string: "\(Constants.STUDENT_LOCATION)?where=%7B%22uniqueKey%22%3A%22\(CurrentClient.sharedInstance().currentStudent.uniqueKey!)%22%7D") else {
+            completion(nil)
+            return
+        }
+        
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.get.rawValue
+        request.addValue(Constants.HeaderValues.PARSE_APP_ID, forHTTPHeaderField: Constants.HeaderKeys.PARSE_APP_ID)
+        request.addValue(Constants.HeaderValues.PARSE_API_KEY, forHTTPHeaderField: Constants.HeaderKeys.PARSE_API_KEY)
+        let session = URLSession.shared
+        
+        let task = session.dataTask(with: request) { data, response, error in
+            if let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                if statusCode >= 200 && statusCode < 300 {
+                    
+                    if let json = try? JSONSerialization.jsonObject(with: data!, options: []),
+                        let dict = json as? [String:Any],
+                        let results = dict["results"] as? [[String:Any]] {
+                        
 
-        /////////////\\\\\\\\\\\\\\///////////////////\\\\\\\\\\\\\\\\\\\\\\
+                        /*CurrentClient.sharedInstance().currentStudent.firstName = results[0]["firstName"] as? String ?? "first"
+                        CurrentClient.sharedInstance().currentStudent.lastName = results[0]["lastName"] as? String ?? "last"*/
+                        
+                        
+                        
+                        for studentInfo in results {
+                            let studentLocation1 = StudentInformation(dictionary: studentInfo as [String : AnyObject])
+                            if studentLocation1.firstName != nil {
+                                CurrentClient.sharedInstance().currentStudent.firstName = studentLocation1.firstName
+                            }
+                            
+                            if studentLocation1.lastName != nil {
+                                CurrentClient.sharedInstance().currentStudent.lastName = studentLocation1.lastName
+                            }
+                        }
+                        
+                    }
+                } //Response is ok
+            } //Request sent succesfully
+            print(String(data: data!, encoding: .utf8)!)
+        }
+        task.resume()
+        
     }
 }
