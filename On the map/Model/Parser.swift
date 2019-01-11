@@ -85,6 +85,11 @@ class Parser {
                 return
             }
             print(String(data: results!, encoding: .utf8)!)
+            
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+
         }
         task.resume()
     }

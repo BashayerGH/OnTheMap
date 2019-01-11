@@ -44,7 +44,7 @@ class API {
                         self.sessionId = sessionDict["id"] as? String
                         self.getUserInfo(completion: { err in
                             if err == nil {
-                                errString = "Couldn't get the user info"
+                                print("Couldn't get the user info")
                             }
                         })
                     } else {
@@ -129,52 +129,40 @@ class API {
     
     
     static func getUserInfo(completion: @escaping (String?)->Void) {
-    
-        print(CurrentClient.sharedInstance().currentStudent.uniqueKey!)
+        print("seesion id info is \(self.sessionId!))")
         
-        
-        
-        guard let url = URL(string: "\(Constants.STUDENT_LOCATION)?where=%7B%22uniqueKey%22%3A%22\(CurrentClient.sharedInstance().currentStudent.uniqueKey!)%22%7D") else {
+        guard let url = URL(string: "https://onthemap-api.udacity.com/v1/users/\(self.sessionId!)") else {
             completion(nil)
             return
         }
         
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = HTTPMethod.get.rawValue
-        request.addValue(Constants.HeaderValues.PARSE_APP_ID, forHTTPHeaderField: Constants.HeaderKeys.PARSE_APP_ID)
-        request.addValue(Constants.HeaderValues.PARSE_API_KEY, forHTTPHeaderField: Constants.HeaderKeys.PARSE_API_KEY)
+        let request = URLRequest(url: url)
         let session = URLSession.shared
-        
         let task = session.dataTask(with: request) { data, response, error in
             if let statusCode = (response as? HTTPURLResponse)?.statusCode {
                 if statusCode >= 200 && statusCode < 300 {
                     
-                    if let json = try? JSONSerialization.jsonObject(with: data!, options: []),
-                        let dict = json as? [String:Any],
-                        let results = dict["results"] as? [[String:Any]] {
-                        
-
-                        /*CurrentClient.sharedInstance().currentStudent.firstName = results[0]["firstName"] as? String ?? "first"
-                        CurrentClient.sharedInstance().currentStudent.lastName = results[0]["lastName"] as? String ?? "last"*/
+                    let range = Range(5..<data!.count)
+                    let newData = data?.subdata(in: range) /* subset response data! */
+                    if let json = try? JSONSerialization.jsonObject(with: newData!, options: []),
+                        let dict = json as? [String:Any]{
                         
                         
+                        CurrentClient.sharedInstance().currentStudent.firstName = dict["first_name"]! as? String
                         
-                        for studentInfo in results {
-                            let studentLocation1 = StudentInformation(dictionary: studentInfo as [String : AnyObject])
-                            if studentLocation1.firstName != nil {
-                                CurrentClient.sharedInstance().currentStudent.firstName = studentLocation1.firstName
-                            }
-                            
-                            if studentLocation1.lastName != nil {
-                                CurrentClient.sharedInstance().currentStudent.lastName = studentLocation1.lastName
-                            }
-                        }
+                        CurrentClient.sharedInstance().currentStudent.lastName = dict["last_name"]! as? String
+                        
+                        
+                        print("first name:")
+                        print(dict["first_name"]!)
+                        print("last name:")
+                        print(dict["last_name"]!)
                         
                     }
                 } //Response is ok
             } //Request sent succesfully
-            print(String(data: data!, encoding: .utf8)!)
+            
+            completion("Get users info done successfully")
         }
         task.resume()
         
